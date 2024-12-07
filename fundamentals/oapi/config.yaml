@@ -1,0 +1,6 @@
+package: oapi
+output: ./payments.gen.go
+generate:
+  models: true
+  client: true
+  gorilla-server: true
