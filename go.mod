@@ -3,6 +3,8 @@ module github.com/nasissa97/ddd-with-go
 go 1.23.4
 
 require (
+	github.com/Rhymond/go-money v1.0.14
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
 	google.golang.org/grpc v1.68.1
 	google.golang.org/protobuf v1.35.2
