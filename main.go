@@ -9,11 +9,12 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/nasissa97/ddd-with-go/fundamentals"
 	"github.com/nasissa97/ddd-with-go/fundamentals/oapi"
+	"github.com/nasissa97/ddd-with-go/patterns"
 )
 
 const BaseURL string = "0.0.0.0:8080"
 
-func main() {
+func failed_attempt() {
 	server := fundamentals.NewServer()
 
 	r := mux.NewRouter()
@@ -46,4 +47,17 @@ func main() {
 
 	fmt.Println(res)
 
+}
+
+func main() {
+	myCar, err := patterns.BuildCar("tesla")
+	if err != nil {
+		log.Fatal(err)
+	}
+	myCar.Honk()
+
+	_, err = patterns.BuildCar("Chevy")
+	if err != nil {
+		log.Print(err)
+	}
 }
