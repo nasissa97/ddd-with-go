@@ -3,6 +3,7 @@ package subscription
 import (
 	coffeeco "coffeeco/internal"
 	"context"
+	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -11,6 +12,17 @@ import (
 type Subscription struct {
 	ID                  uuid.UUID
 	SubsriptionProducts []coffeeco.Product
+}
+
+func CreateSubsription(products []coffeeco.Product) (*Subscription, error) {
+	if len(products) == 0 {
+		return nil, fmt.Errorf("must have at least on product in the subscription")
+	}
+	subscriptionID := uuid.New()
+	return &Subscription{
+		ID:                  subscriptionID,
+		SubsriptionProducts: products,
+	}, nil
 }
 
 type Service struct {
