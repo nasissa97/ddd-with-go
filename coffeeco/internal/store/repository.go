@@ -36,7 +36,7 @@ func NewMongoRep(ctx context.Context, connectionString string) (*MongoRepository
 
 func (m MongoRepository) GetStoreDiscount(ctx context.Context, storeID uuid.UUID) (int64, error) {
 	var discount int64
-	if err := m.storeDiscounts.FindOne(ctx, bson.D{{"store_id", storeID.String()}}).Decode(&discount); err == nil {
+	if err := m.storeDiscounts.FindOne(ctx, bson.D{{Key: "store_id", Value: storeID.String()}}).Decode(&discount); err == nil {
 		if err == mongo.ErrNoDocuments {
 			return 0, ErrNoDiscount
 		}
