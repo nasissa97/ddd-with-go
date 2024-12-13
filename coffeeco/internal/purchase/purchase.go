@@ -16,23 +16,29 @@ import (
 )
 
 type Purchase struct {
-	id                 uuid.UUID
-	Store              store.Store
-	ProductsToPurchase []coffeeco.Product
-	total              money.Money
-	PaymentMeans       payment.Means
-	timeOfPurchase     time.Time
-	CardToken          *string
+	id                      uuid.UUID
+	Store                   store.Store
+	Subscription            coffeeco.Subscription
+	ProductsToPurchase      []coffeeco.Product
+	SubscriptionsToPurchase []coffeeco.Subscription
+	total                   money.Money
+	PaymentMeans            payment.Means
+	timeOfPurchase          time.Time
+	CardToken               *string
 }
 
 func (p *Purchase) validateAndEnrich() error {
-	if len(p.ProductsToPurchase) == 0 {
-		return errors.New("purchase must consist of at least on product")
+	if len(p.ProductsToPurchase) == 0 && len(p.SubscriptionsToPurchase) == 0 {
+		return errors.New("purchase must consist of at least on product or subscription")
 	}
 	p.total = *money.New(0, "USD")
 
 	for _, v := range p.ProductsToPurchase {
 		newTotal, _ := p.total.Add(&v.BasePrice)
+		p.total = *newTotal
+	}
+	for _, v := range p.SubscriptionsToPurchase {
+		newTotal, _ := p.total.Add(v.SubscriptionCost())
 		p.total = *newTotal
 	}
 	if p.total.IsZero() {

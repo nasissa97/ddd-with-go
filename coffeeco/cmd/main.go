@@ -49,7 +49,7 @@ func main() {
 
 	storeID := uuid.New()
 
-	purchase := &purchase.Purchase{
+	productPurchase := &purchase.Purchase{
 		CardToken: &cardToken,
 		Store: store.Store{
 			ID: storeID,
@@ -61,10 +61,28 @@ func main() {
 		PaymentMeans: payment.MEANS_CARD,
 	}
 
-	if err := service.CompletePurchase(ctx, storeID, purchase, nil); err != nil {
+	if err := service.CompletePurchase(ctx, storeID, productPurchase, nil); err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("purchase was successful")
+	log.Println("product purchase was successful")
+
+	subscriptionPurchase := &purchase.Purchase{
+		CardToken: &cardToken,
+		Store: store.Store{
+			ID: storeID,
+		},
+		ProductsToPurchase: []coffeeco.Product{},
+		SubscriptionsToPurchase: []coffeeco.Subscription{{
+			SubscriptionTier: coffeeco.CoffeeDaily,
+		}},
+		PaymentMeans: payment.MEANS_CARD,
+	}
+
+	if err := service.CompletePurchase(ctx, storeID, subscriptionPurchase, nil); err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("subscription purchase was successful")
 
 }
